@@ -15,6 +15,9 @@ public class DeveloperResource {
 
     /*
     POST: curl -d "{"""name""":"""Ada"""}" -H "Content-Type: application/json" -X POST http://localhost:8080/developer -v
+
+    CORS: curl -d "{"""name""":"""Ada"""}" -H "Content-Type: application/json" -X POST http://localhost:8080/developer
+     -H "Origin: http://example.com" --verbose
      */
 
     @POST

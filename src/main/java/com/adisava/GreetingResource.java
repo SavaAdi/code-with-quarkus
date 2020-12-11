@@ -2,7 +2,6 @@ package com.adisava;
 
 import com.adisava.model.Quark;
 import com.adisava.rest.LOCK;
-import com.adisava.resteasyjackson.JacksonResource;
 
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
@@ -44,8 +43,7 @@ public class GreetingResource {
 
     /*
     Extending supported HTTP verbs using HttpMethod and custom annotations
-
-
+    Command:  curl -X LOCK http://localhost:8080/hello-resteasy/1
      */
 
     @LOCK
