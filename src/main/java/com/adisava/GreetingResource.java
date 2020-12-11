@@ -1,6 +1,7 @@
 package com.adisava;
 
 import com.adisava.model.Quark;
+import com.adisava.rest.LOCK;
 import com.adisava.resteasyjackson.JacksonResource;
 
 import javax.validation.constraints.NotBlank;
@@ -39,5 +40,18 @@ public class GreetingResource {
 
         return String.format("URI: %s - Order %s - Authorization: %s",
                 uriInfo.getAbsolutePath(), order, authorization);
+    }
+
+    /*
+    Extending supported HTTP verbs using HttpMethod and custom annotations
+
+
+     */
+
+    @LOCK
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("{id}")
+    public String lockResource(@PathParam("id") long id) {
+        return id + " locked";
     }
 }
