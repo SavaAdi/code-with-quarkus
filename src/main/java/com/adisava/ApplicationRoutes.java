@@ -1,5 +1,6 @@
 package com.adisava;
 
+import io.quarkus.vertx.http.runtime.filters.Filters;
 import io.quarkus.vertx.web.Route;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
@@ -32,5 +33,19 @@ public class ApplicationRoutes {
         }
 
         routingContext.response().end("OK, " + name + " my friend");
+    }
+
+    /*
+    Command1: curl localhost:8080/ok -v
+    Command2: curl -X GET "http://localhost:8080/hello-resteasy?order=asc" -H "accept: text/plain" -H "authorization: XYZ" -v
+     */
+
+    public void filters(@Observes Filters filters) {
+        filters
+                .register(routingContext -> {
+                    routingContext.response()
+                            .putHeader("V-Header", "Header added by this VertX Filter");
+                    routingContext.next();
+                }, 10);
     }
 }
