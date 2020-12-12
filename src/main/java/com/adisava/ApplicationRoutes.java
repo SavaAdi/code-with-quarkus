@@ -7,6 +7,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -22,6 +23,13 @@ public class ApplicationRoutes {
     names with the %profile prefix
      */
     String appName = ConfigProvider.getConfig().getValue("quarkus.application.name", String.class);
+
+    /*
+    Seems like @Inject is not required here, but might be OK for marking the intention.
+    Loads the profile specific property, no need to qualify the properties name with %profile prefix
+     */
+    @ConfigProperty(name = "quarkus.http.port", defaultValue = "8080")
+    String appPort;
 
     public void routes(@Observes Router router) {
         /*
@@ -51,6 +59,11 @@ public class ApplicationRoutes {
         }
 
         routingContext.response().end("OK, " + name + " my friend");
+    }
+
+    @Route(path = "port", methods = HttpMethod.GET)
+    public void getPort(RoutingContext routingContext) {
+        routingContext.response().end("Application port is " + appPort);
     }
 
     /*
