@@ -3,6 +3,9 @@ package com.adisava;
 import com.adisava.model.Quark;
 import com.adisava.rest.LOCK;
 import com.adisava.service.GreetingsTodayService;
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
+import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 @Path("/hello-resteasy")
 public class GreetingResource {
@@ -35,7 +40,7 @@ public class GreetingResource {
      */
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String hello(
             @Context UriInfo uriInfo,
             @QueryParam("order") Order order,
@@ -52,16 +57,26 @@ public class GreetingResource {
      */
 
     @LOCK
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     @Path("{id}")
     public String lockResource(@PathParam("id") long id) {
         return id + " locked";
     }
 
     @GET
+    @Cache(maxAge = 3000) //Only adds Cache-Control headers
+    @CacheResult(cacheName = "service")
     @Path("/service")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String helloToday() {
+    @Produces(TEXT_PLAIN)
+    public String helloToday() throws InterruptedException {
         return greetingsTodayService.getGreetingToday();
+    }
+
+    @GET
+    @Path("/service/invalidate")
+    @Produces(TEXT_PLAIN)
+    @CacheInvalidateAll(cacheName = "service") //invalidates for all keys...not that we have any in this case
+    public String invalidateCache() {
+        return "Cache was invalidated";
     }
 }
