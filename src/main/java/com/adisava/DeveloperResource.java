@@ -2,6 +2,7 @@ package com.adisava;
 
 import com.adisava.model.Developer;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,7 +24,7 @@ public class DeveloperResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDeveloper(Developer developer) {
+    public Response createDeveloper(@Valid Developer developer) {
         developer.persist();
 
         return Response.created(
