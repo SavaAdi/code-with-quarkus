@@ -2,7 +2,9 @@ package com.adisava;
 
 import com.adisava.model.Quark;
 import com.adisava.rest.LOCK;
+import com.adisava.service.GreetingsTodayService;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -11,6 +13,9 @@ import javax.ws.rs.core.UriInfo;
 
 @Path("/hello-resteasy")
 public class GreetingResource {
+
+    @Inject
+    GreetingsTodayService greetingsTodayService;
 
     public enum Order {
         desc, asc;
@@ -51,5 +56,12 @@ public class GreetingResource {
     @Path("{id}")
     public String lockResource(@PathParam("id") long id) {
         return id + " locked";
+    }
+
+    @GET
+    @Path("/service")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String helloToday() {
+        return greetingsTodayService.getGreetingToday();
     }
 }
