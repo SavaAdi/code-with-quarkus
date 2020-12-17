@@ -5,6 +5,7 @@ import com.adisava.rest.LOCK;
 import com.adisava.service.GreetingsTodayService;
 import io.quarkus.cache.CacheInvalidateAll;
 import io.quarkus.cache.CacheResult;
+import io.quarkus.runtime.annotations.CommandLineArguments;
 import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.inject.Inject;
@@ -21,6 +22,9 @@ public class GreetingResource {
 
     @Inject
     GreetingsTodayService greetingsTodayService;
+
+    @CommandLineArguments
+    String[] args;
 
     public enum Order {
         desc, asc;
@@ -78,5 +82,12 @@ public class GreetingResource {
     @CacheInvalidateAll(cacheName = "service") //invalidates for all keys...not that we have any in this case
     public String invalidateCache() {
         return "Cache was invalidated";
+    }
+
+    @GET
+    @Path("/argument")
+    @Produces(TEXT_PLAIN)
+    public String getFirstArgument() {
+        return args[0];
     }
 }
