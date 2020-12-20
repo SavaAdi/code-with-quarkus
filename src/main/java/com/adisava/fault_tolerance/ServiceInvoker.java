@@ -1,9 +1,6 @@
 package com.adisava.fault_tolerance;
 
-import org.eclipse.microprofile.faulttolerance.ExecutionContext;
-import org.eclipse.microprofile.faulttolerance.Fallback;
-import org.eclipse.microprofile.faulttolerance.FallbackHandler;
-import org.eclipse.microprofile.faulttolerance.Retry;
+import org.eclipse.microprofile.faulttolerance.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,12 +20,17 @@ public class ServiceInvoker {
 
     public static class RecoverHelloMessageFallback implements FallbackHandler<String> //Same type as the return type of the fallbackMethod
     {
-
         @Override
         public String handle(ExecutionContext executionContext) {
             return "I recovered";
         }
-
     }
+
+    @Timeout(value = 2000) // Timeouts if the return takes longer than 2 secs
+    public String getHelloWithTimeout() {
+        failureSimulator.longMethod();
+        return "hello";
+    }
+
 
 }
