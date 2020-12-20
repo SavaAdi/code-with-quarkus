@@ -33,5 +33,11 @@ public class FaultGreetingResource {
         }
     }
 
+    @GET
+    @Path("/bulkhead")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String helloBulkhead() {
+        return serviceInvoker.getHelloBulkhead();
+    }
 
 }

@@ -29,7 +29,7 @@ public class FailureSimulator {
 
     public void shortMethod() {
         try {
-            TimeUnit.SECONDS.sleep(2);
+            TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException e) {
         }
     }

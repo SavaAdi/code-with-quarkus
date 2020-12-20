@@ -32,5 +32,12 @@ public class ServiceInvoker {
         return "hello";
     }
 
+    @Bulkhead(2) // Handles at most 2 request at the same time, for extra requests throws BulkheadException
+    public String getHelloBulkhead() {
+        failureSimulator.shortMethod();
+        return "hello";
+    }
+
+
 
 }
