@@ -1,5 +1,6 @@
 package com.adisava.fault_tolerance;
 
+import org.eclipse.microprofile.faulttolerance.exceptions.CircuitBreakerOpenException;
 import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
 
 import javax.inject.Inject;
@@ -39,5 +40,19 @@ public class FaultGreetingResource {
     public String helloBulkhead() {
         return serviceInvoker.getHelloBulkhead();
     }
+
+    @GET
+    @Path("/circuitbreaker")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response helloCiruitBreaker() {
+        try {
+            return Response.ok(serviceInvoker.getHelloCircuitBreaker()).build();
+        } catch(IllegalStateException e) {
+            return Response.serverError().entity("Normal Exception").build();
+        } catch(CircuitBreakerOpenException e) {
+            return Response.serverError().entity("Circuit Open").build();
+        }
+    }
+
 
 }

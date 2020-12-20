@@ -38,6 +38,15 @@ public class ServiceInvoker {
         return "hello";
     }
 
+    @CircuitBreaker(requestVolumeThreshold = 4, // Part of the threshold trip formula
+            failureRatio = 0.75,  // Threshold to trip the circuit 4 x 0.75 = 3
+            delay = 2000) // Amount of time that the circuit is opened
+    public String getHelloCircuitBreaker() {
+        failureSimulator.fail4Consecutive();
+        return "hello";
+    }
+
+
 
 
 }
