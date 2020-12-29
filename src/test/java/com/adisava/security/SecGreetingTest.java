@@ -10,16 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @QuarkusTest
 class SecGreetingTest {
 
+    public static final String user = "Adi"; // hardcoding bad
+
     @Test
     public void testSecHello() {
         given()
                 .auth()
-                .basic("Adi", "testerpass")
+                .basic(user, "testerpass")
                 .when()
                 .get("/sec-hello/secured")
                 .then()
                 .statusCode(200)
-                .body(is("Adi just logged in!"));
+                .body(is(user + " just logged in!"));
     }
 
 }
