@@ -1,7 +1,6 @@
 package com.adisava;
 
 import com.adisava.model.Coder;
-import com.adisava.model.Developer;
 import com.adisava.service.SalutationsService;
 
 import javax.inject.Inject;
