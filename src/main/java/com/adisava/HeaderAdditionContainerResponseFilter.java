@@ -21,5 +21,7 @@ public class HeaderAdditionContainerResponseFilter implements ContainerResponseF
                        ContainerResponseContext containerResponseContext) throws IOException {
         containerResponseContext.getHeaders()
                 .add("X-Header", "Header added by JAXRS Filter");
+        // branch1stuff
+        //otherstuf2
     }
 }

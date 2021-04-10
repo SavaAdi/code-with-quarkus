@@ -7,12 +7,12 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
-@QuarkusTest
+
 class SecGreetingTest {
 
     public static final String user = "Adi"; // hardcoding bad
 
-    @Test
+
     public void testSecHello() {
         given()
                 .auth()
