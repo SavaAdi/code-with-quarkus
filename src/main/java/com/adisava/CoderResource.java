@@ -2,6 +2,7 @@ package com.adisava;
 
 import com.adisava.model.Coder;
 import com.adisava.service.SalutationsService;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -10,7 +11,10 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+
 @Path("/coder")
+@Traced
 public class CoderResource {
 
     @Inject
@@ -24,16 +28,17 @@ public class CoderResource {
 
     @GET
     @Path("/salute")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(TEXT_PLAIN)
     public String saluteCoder() {
         return salutationsService.message();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addDeveloper(Coder coder) {
+    @Produces(TEXT_PLAIN)
+    public String addDeveloper(Coder coder) {
         coders.add(coder);
-        return Response.ok().build();
+        return salutationsService.message(coder.getName());
     }
 
     @GET
